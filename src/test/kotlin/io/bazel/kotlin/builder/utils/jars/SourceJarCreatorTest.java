@@ -16,49 +16,48 @@
 package io.bazel.kotlin.builder.utils.jars;
 
 import com.google.common.truth.StandardSubjectBuilder;
-import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.List;
+import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 
 public class SourceJarCreatorTest {
-    private final String expectedPackage = "iO.some1.package";
+  private final String expectedPackage = "iO.some1.package";
 
-    private final List<String> cases =
-            Arrays.asList(
-                    "package iO.some1.package",
-                    "package iO.some1.package ",
-                    "package iO.some1.package;",
-                    " package iO.some1.package; ",
-                    " /* a comment*/ package iO.some1.package; ",
-                    " /** a comment*/ package iO.some1.package; ",
-                    " /* a comment*//*blah*/package iO.some1.package; ",
-                    " /* a comment*//*blah*/ package iO.some1.package; ",
-                    " /* a comment*/package /* blah */ iO.some1.package /*lala*/; ",
-                    "/* a comment*/package/**/iO.some1.package/*b*/;");
+  private final List<String> cases =
+      Arrays.asList(
+          "package iO.some1.package",
+          "package iO.some1.package ",
+          "package iO.some1.package;",
+          " package iO.some1.package; ",
+          " /* a comment*/ package iO.some1.package; ",
+          " /** a comment*/ package iO.some1.package; ",
+          " /* a comment*//*blah*/package iO.some1.package; ",
+          " /* a comment*//*blah*/ package iO.some1.package; ",
+          " /* a comment*/package /* blah */ iO.some1.package /*lala*/; ",
+          "/* a comment*/package/**/iO.some1.package/*b*/;");
 
-    @Test
-    public void testPackageNameRegex() {
-        cases.forEach(
-                (testCase) -> {
-                    String pkg = SourceJarCreator.Companion.extractPackage(testCase);
-                    StandardSubjectBuilder subj = assertWithMessage("positive test case: " + testCase);
-                    subj.that(pkg).isNotNull();
-                    subj.that(pkg).isEqualTo(expectedPackage);
-                });
-    }
+  @Test
+  public void testPackageNameRegex() {
+    cases.forEach(
+        (testCase) -> {
+          String pkg = SourceJarCreator.Companion.extractPackage(testCase);
+          StandardSubjectBuilder subj = assertWithMessage("positive test case: " + testCase);
+          subj.that(pkg).isNotNull();
+          subj.that(pkg).isEqualTo(expectedPackage);
+        });
+  }
 
-    @Test
-    public void testPackageNameRegexWithZero() {
-        cases.forEach(
-                (testCase) -> {
-                    testCase = testCase.replace("some1", "some0");
-                    String pkg = SourceJarCreator.Companion.extractPackage(testCase);
-                    StandardSubjectBuilder subj = assertWithMessage("positive test case: " + testCase);
-                    subj.that(pkg).isNotNull();
-                    subj.that(pkg).isEqualTo("iO.some0.package");
-                });
-    }
+  @Test
+  public void testPackageNameRegexWithZero() {
+    cases.forEach(
+        (testCase) -> {
+          testCase = testCase.replace("some1", "some0");
+          String pkg = SourceJarCreator.Companion.extractPackage(testCase);
+          StandardSubjectBuilder subj = assertWithMessage("positive test case: " + testCase);
+          subj.that(pkg).isNotNull();
+          subj.that(pkg).isEqualTo("iO.some0.package");
+        });
+  }
 }

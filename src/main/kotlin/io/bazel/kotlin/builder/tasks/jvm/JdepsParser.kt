@@ -28,7 +28,10 @@ internal class JdepsParser private constructor(
   private val moduleDeps = HashMap<String, MutableList<String>>()
   private val arrowRegex = " -> ".toRegex()
 
-  private fun consumeJarLine(classJarPath: String, kind: Deps.Dependency.Kind) {
+  private fun consumeJarLine(
+    classJarPath: String,
+    kind: Deps.Dependency.Kind
+  ) {
     // ignore absolute files, -- jdk jar paths etc.
     // only process jar files
     if (classJarPath.endsWith(".jar")) {
@@ -50,7 +53,10 @@ internal class JdepsParser private constructor(
     }
   }
 
-  private fun addModuleDependency(module: String, jarFile: String) {
+  private fun addModuleDependency(
+    module: String,
+    jarFile: String
+  ) {
     val entry = moduleDeps.computeIfAbsent(module) {
       mutableListOf<String>()
     }
@@ -64,13 +70,16 @@ internal class JdepsParser private constructor(
     }
   }
 
-  private fun markFromEntry(entry: String, kind: Deps.Dependency.Kind) {
+  private fun markFromEntry(
+    entry: String,
+    kind: Deps.Dependency.Kind
+  ) {
     moduleDeps[entry]?.forEach { jarPath ->
       val dependency = depMap[jarPath]
       if (dependency != null) {
         if (dependency.kind == Deps.Dependency.Kind.UNUSED) {
           dependency.kind = kind
-          val jarFile = Paths.get(jarPath).getFileName().toString()
+          val jarFile = Paths.get(jarPath).fileName.toString()
           markFromEntry(jarFile, Deps.Dependency.Kind.IMPLICIT)
         }
       }
@@ -78,7 +87,10 @@ internal class JdepsParser private constructor(
   }
 
   companion object {
-    fun pathSuffixMatchingPredicate(directory: Path, vararg jars: String): Predicate<String> {
+    fun pathSuffixMatchingPredicate(
+      directory: Path,
+      vararg jars: String
+    ): Predicate<String> {
       val suffixes = jars.map { directory.resolve(it).toString() }
       return Predicate { jar ->
         for (implicitJarsEnding in suffixes) {

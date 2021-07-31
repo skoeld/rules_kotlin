@@ -46,7 +46,11 @@ internal fun JvmCompilationTask.createCoverageInstrumentedJar() {
   }
 }
 
-private fun instrumentRecursively(instr: Instrumenter, metadataDir: Path, root: Path) {
+private fun instrumentRecursively(
+  instr: Instrumenter,
+  metadataDir: Path,
+  root: Path
+) {
   val visitor = object : SimpleFileVisitor<Path>() {
     override fun visitFile(
       file: Path,

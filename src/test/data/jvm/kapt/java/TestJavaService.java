@@ -17,9 +17,8 @@ package tests.smoke.kapt.java;
 
 import com.google.auto.service.AutoService;
 
-
 public interface TestJavaService {
-    @AutoService(TestJavaService.class)
-    class Impl implements TestJavaService {
-    }
+  @AutoService(TestJavaService.class)
+  class Impl implements TestJavaService {
+  }
 }

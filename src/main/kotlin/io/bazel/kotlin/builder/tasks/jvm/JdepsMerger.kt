@@ -71,7 +71,7 @@ class JdepsMerger {
       inputs.forEach { input ->
         BufferedInputStream(Paths.get(input).toFile().inputStream()).use {
           val deps: Deps.Dependencies = Deps.Dependencies.parseFrom(it)
-          deps.getDependencyList().forEach {
+          deps.dependencyList.forEach {
             val dependency = dependencyMap.get(it.path)
             // Replace dependency if it has a stronger kind than one we encountered before.
             if (dependency == null || dependency.kind > it.kind) {
@@ -98,14 +98,13 @@ class JdepsMerger {
 
         if (unusedLabels.isNotEmpty()) {
           ctx.info {
-            val open = "\u001b[35m\u001b[1m"
-            val close = "\u001b[0m"
+            val unused = unusedLabels.joinToString(" ")
+            val o = "\u001b[35m\u001b[1m"
+            val c = "\u001b[0m"
             return@info """
-            |$open ** Please remove the following dependencies:$close ${unusedLabels.joinToString(" ")} from $label 
-            |$open ** You can use the following buildozer command:$close buildozer 'remove deps ${
-              unusedLabels.joinToString(" ")
-            }' $label
-          """.trimMargin()
+            |$o ** Please remove the dependencies:$c $unused from $label 
+            |$o ** You can use the buildozer command:$c buildozer 'remove deps $unused' $label
+            """.trimMargin()
           }
           return if (reportUnusedDeps == "error") 1 else 0
         }
@@ -114,7 +113,11 @@ class JdepsMerger {
     }
   }
 
-  private data class JarOwner(val jar: Path, val label: String? = null, val aspect: String? = null)
+  private data class JarOwner(
+    val jar: Path,
+    val label: String? = null,
+    val aspect: String? = null
+  )
 
   private fun getArgs(args: List<String>): ArgMap {
     check(args.isNotEmpty()) { "expected at least a single arg got: ${args.joinToString(" ")}" }
@@ -125,7 +128,10 @@ class JdepsMerger {
     return ArgMaps.from(lines)
   }
 
-  fun execute(ctx: WorkerContext.TaskContext, args: List<String>): Int {
+  fun execute(
+    ctx: WorkerContext.TaskContext,
+    args: List<String>
+  ): Int {
     val argMap = getArgs(args)
     val inputs = argMap.mandatory(JdepsMergerFlags.INPUTS)
     val output = argMap.mandatorySingle(JdepsMergerFlags.OUTPUT)

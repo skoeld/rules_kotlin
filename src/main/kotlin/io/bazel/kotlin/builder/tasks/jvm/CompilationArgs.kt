@@ -168,7 +168,10 @@ class CompilationArgs(
     return this
   }
 
-  fun xFlag(flag: String, value: String): CompilationArgs {
+  fun xFlag(
+    flag: String,
+    value: String
+  ): CompilationArgs {
     args.add("-X$flag=$value")
     return this
   }

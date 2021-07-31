@@ -84,7 +84,10 @@ class CompilationTaskContext(
   /**
    * Print a proto message if debugging is enabled for the task.
    */
-  fun printProto(header: String, msg: MessageOrBuilder) {
+  fun printProto(
+    header: String,
+    msg: MessageOrBuilder
+  ) {
     printLines(header, TextFormat.printToString(msg).split("\n"), filterEmpty = true)
   }
 
@@ -137,19 +140,28 @@ class CompilationTaskContext(
   /**
    * Runs a task and records the timings.
    */
-  fun <T> execute(name: String, task: () -> T): T = execute({ name }, task)
+  fun <T> execute(
+    name: String,
+    task: () -> T
+  ): T = execute({ name }, task)
 
   /**
    * Runs a task and records the timings.
    */
   @Suppress("MemberVisibilityCanBePrivate")
-  fun <T> execute(name: () -> String, task: () -> T): T {
+  fun <T> execute(
+    name: () -> String,
+    task: () -> T
+  ): T {
     return if (timings == null) {
       task()
     } else pushTimedTask(name(), task)
   }
 
-  private inline fun <T> pushTimedTask(name: String, task: () -> T): T {
+  private inline fun <T> pushTimedTask(
+    name: String,
+    task: () -> T
+  ): T {
     level += 1
     val previousTimings = timings
     timings = mutableListOf()

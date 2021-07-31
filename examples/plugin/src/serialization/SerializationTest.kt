@@ -1,6 +1,5 @@
 package plugin.serialization
 
-import org.junit.*
 import org.junit.Assert.assertNotNull
 
 class SerializationTest {

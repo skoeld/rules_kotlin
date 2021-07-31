@@ -37,7 +37,10 @@ class KotlinJvmTaskExecutor @Inject internal constructor(
   private val plugins: InternalCompilerPlugins
 ) {
 
-  private fun combine(one: Throwable?, two: Throwable?): Throwable? {
+  private fun combine(
+    one: Throwable?,
+    two: Throwable?
+  ): Throwable? {
     return when {
       one != null && two != null -> {
         one.addSuppressed(two)
@@ -48,7 +51,10 @@ class KotlinJvmTaskExecutor @Inject internal constructor(
     }
   }
 
-  fun execute(context: CompilationTaskContext, task: JvmCompilationTask) {
+  fun execute(
+    context: CompilationTaskContext,
+    task: JvmCompilationTask
+  ) {
     val preprocessedTask = task
       .preProcessingSteps(context)
       .runPlugins(context, plugins, compiler)
@@ -127,7 +133,9 @@ class KotlinJvmTaskExecutor @Inject internal constructor(
           context.execute("create abi jar", ::createAbiJar)
         }
         if (outputs.javaJdeps.isNotEmpty()) {
-          context.execute("generate jdeps for Java compilation") { jDepsGenerator.generateJDeps(this) }
+          context.execute("generate jdeps for Java compilation") {
+            jDepsGenerator.generateJDeps(this)
+          }
         }
         if (outputs.generatedJavaSrcJar.isNotEmpty()) {
           context.execute("creating KAPT generated Java source jar", ::createGeneratedJavaSrcJar)

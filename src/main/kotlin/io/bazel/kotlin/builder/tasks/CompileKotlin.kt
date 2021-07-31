@@ -23,7 +23,10 @@ import io.bazel.worker.WorkerContext
 import javax.inject.Inject
 
 class CompileKotlin @Inject constructor(private val builder: KotlinBuilder) : Work {
-  override fun invoke(ctx: WorkerContext.TaskContext, args: Iterable<String>): Status {
+  override fun invoke(
+    ctx: WorkerContext.TaskContext,
+    args: Iterable<String>
+  ): Status {
     return if (builder.build(ctx, args.toList()) != 0) {
       Status.ERROR
     } else {

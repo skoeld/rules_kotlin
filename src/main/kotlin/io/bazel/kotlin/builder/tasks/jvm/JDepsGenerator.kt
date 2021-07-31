@@ -53,7 +53,8 @@ internal class JDepsGenerator @Inject constructor(
             val multiRelease =
               if (version < 9) arrayOf() else arrayOf("--multi-release", "base")
             val javaClassDir = command.directories.javaClasses
-            val args = multiRelease + arrayOf("-R", "-summary", "-cp", joinedClasspath, javaClassDir)
+            val args =
+              multiRelease + arrayOf("-R", "-summary", "-cp", joinedClasspath, javaClassDir)
             val res = invoker.run(args, writer)
             out.toByteArray().inputStream().bufferedReader().readLines().let {
               if (res != 0) {
@@ -77,7 +78,10 @@ internal class JDepsGenerator @Inject constructor(
   }
 
   companion object {
-    internal fun writeJdeps(path: String, jdepsContent: Deps.Dependencies) {
+    internal fun writeJdeps(
+      path: String,
+      jdepsContent: Deps.Dependencies
+    ) {
       Paths.get(path).also {
         Files.deleteIfExists(it)
         FileOutputStream(Files.createFile(it).toFile()).use(jdepsContent::writeTo)

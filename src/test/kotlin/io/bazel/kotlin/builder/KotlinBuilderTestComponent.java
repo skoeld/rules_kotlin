@@ -23,26 +23,25 @@ import io.bazel.kotlin.builder.tasks.KotlinBuilder;
 import io.bazel.kotlin.builder.tasks.js.Kotlin2JsTaskExecutor;
 import io.bazel.kotlin.builder.tasks.jvm.KotlinJvmTaskExecutor;
 import io.bazel.kotlin.builder.toolchain.KotlinToolchain;
-
 import javax.inject.Singleton;
 
 @Singleton
-@dagger.Component(modules = {KotlinBuilderComponent.Module.class})
+@dagger.Component(modules = { KotlinBuilderComponent.Module.class })
 public interface KotlinBuilderTestComponent {
 
-    KotlinBuilder kotlinBuilder();
+  KotlinBuilder kotlinBuilder();
 
-    KotlinToolchain toolchain();
+  KotlinToolchain toolchain();
 
-    KotlinJvmTaskExecutor jvmTaskExecutor();
+  KotlinJvmTaskExecutor jvmTaskExecutor();
 
-    Kotlin2JsTaskExecutor jsTaskExecutor();
+  Kotlin2JsTaskExecutor jsTaskExecutor();
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance
-        Builder toolchain(KotlinToolchain toolchain);
+  @Component.Builder
+  interface Builder {
+    @BindsInstance
+    Builder toolchain(KotlinToolchain toolchain);
 
-        KotlinBuilderTestComponent build();
-    }
+    KotlinBuilderTestComponent build();
+  }
 }

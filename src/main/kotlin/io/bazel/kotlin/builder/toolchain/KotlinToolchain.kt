@@ -56,7 +56,9 @@ class KotlinToolchain private constructor(
         ?: System.getenv("REPOSITORY_NAME")?.takeIf { it.isNotBlank() }
         //   ?: System.getProperty("TEST_WORKSPACE")?.takeIf { it.isNotBlank() }
         ?: error(
-          "Unable to determine rules_kotlin repository name.\nenv:${System.getenv()}\nproperties:${System.getProperties()}"
+          "Unable to determine rules_kotlin repository name." +
+            "\nenv:${System.getenv()}" +
+            "\nproperties:${System.getProperties()}"
         )
 
     private val DEFAULT_JVM_ABI_PATH = BazelRunFiles.resolveVerified(
@@ -85,7 +87,10 @@ class KotlinToolchain private constructor(
 
     private val isJdk9OrNewer = !System.getProperty("java.version").startsWith("1.")
 
-    private fun createClassLoader(javaHome: Path, baseJars: List<File>): ClassLoader =
+    private fun createClassLoader(
+      javaHome: Path,
+      baseJars: List<File>
+    ): ClassLoader =
       ClassPreloadingUtils.preloadClasses(
         mutableListOf<File>().also {
           it += baseJars
@@ -149,7 +154,10 @@ class KotlinToolchain private constructor(
     }
   }
 
-  data class CompilerPlugin(val jarPath: String, val id: String)
+  data class CompilerPlugin(
+    val jarPath: String,
+    val id: String
+  )
 
   @Singleton
   class JavacInvoker @Inject constructor(toolchain: KotlinToolchain) {
@@ -157,14 +165,20 @@ class KotlinToolchain private constructor(
     private val m = c.getMethod("compile", Array<String>::class.java)
     private val mPw = c.getMethod("compile", Array<String>::class.java, PrintWriter::class.java)
     fun compile(args: Array<String>) = m.invoke(c, args) as Int
-    fun compile(args: Array<String>, out: PrintWriter) = mPw.invoke(c, args, out) as Int
+    fun compile(
+      args: Array<String>,
+      out: PrintWriter
+    ) = mPw.invoke(c, args, out) as Int
   }
 
   @Singleton
   class JDepsInvoker @Inject constructor(toolchain: KotlinToolchain) {
     private val clazz = toolchain.classLoader.loadClass("com.sun.tools.jdeps.Main")
     private val method = clazz.getMethod("run", Array<String>::class.java, PrintWriter::class.java)
-    fun run(args: Array<String>, out: PrintWriter): Int = method.invoke(clazz, args, out) as Int
+    fun run(
+      args: Array<String>,
+      out: PrintWriter
+    ): Int = method.invoke(clazz, args, out) as Int
   }
 
   open class KotlinCliToolInvoker internal constructor(
@@ -190,7 +204,10 @@ class KotlinToolchain private constructor(
     // 1 is a standard compilation error
     // 2 is an internal error
     // 3 is the script execution error
-    fun compile(args: Array<String>, out: PrintStream): Int {
+    fun compile(
+      args: Array<String>,
+      out: PrintStream
+    ): Int {
       val exitCodeInstance = execMethod.invoke(compiler, out, args)
       return getCodeMethod.invoke(exitCodeInstance, *NO_ARGS) as Int
     }

@@ -110,7 +110,9 @@ internal fun JvmCompilationTask.plugins(
     }
   }
 
-internal fun JvmCompilationTask.preProcessingSteps(context: CompilationTaskContext): JvmCompilationTask {
+internal fun JvmCompilationTask.preProcessingSteps(
+  context: CompilationTaskContext
+): JvmCompilationTask {
   return context.execute("expand sources") { expandWithSourceJarSources() }
 }
 
@@ -160,7 +162,9 @@ internal fun JvmCompilationTask.runPlugins(
   plugins: InternalCompilerPlugins,
   compiler: KotlinToolchain.KotlincInvoker
 ): JvmCompilationTask {
-  if ((inputs.processorsList.isEmpty() && inputs.stubsPluginsList.isEmpty()) || inputs.kotlinSourcesList.isEmpty()) {
+  if ((inputs.processorsList.isEmpty() && inputs.stubsPluginsList.isEmpty()) ||
+    inputs.kotlinSourcesList.isEmpty()
+  ) {
     return this
   } else {
     return context.execute("kapt (${inputs.processorsList.joinToString(", ")})") {

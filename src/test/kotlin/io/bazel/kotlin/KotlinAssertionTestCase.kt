@@ -51,7 +51,11 @@ abstract class KotlinAssertionTestCase(root: String) : BasicAssertionTestCase() 
     }
   }
 
-  private inline fun runTestCase(name: String, description: String? = null, op: () -> Unit) =
+  private inline fun runTestCase(
+    name: String,
+    description: String? = null,
+    op: () -> Unit
+  ) =
     try {
       op()
     } catch (t: Throwable) {
@@ -62,7 +66,11 @@ abstract class KotlinAssertionTestCase(root: String) : BasicAssertionTestCase() 
       }
     }
 
-  protected fun jarTestCase(name: String, description: String? = null, op: JarFile.() -> Unit) {
+  protected fun jarTestCase(
+    name: String,
+    description: String? = null,
+    op: JarFile.() -> Unit
+  ) {
     currentFile = testRunfileRoot.resolve(name).toFile()
     check(currentFile.exists()) {
       "testFile $name did not exist in test case root $testRunfileRoot"
@@ -128,7 +136,10 @@ abstract class KotlinAssertionTestCase(root: String) : BasicAssertionTestCase() 
 }
 
 abstract class BasicAssertionTestCase {
-  protected fun assertExecutableRunfileSucceeds(executable: String, description: String? = null) {
+  protected fun assertExecutableRunfileSucceeds(
+    executable: String,
+    description: String? = null
+  ) {
     ProcessBuilder().command("bash", "-c", Paths.get(executable).fileName.toString())
       .also { it.directory(executable.resolveDirectory()) }
       .start().let {

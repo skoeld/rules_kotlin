@@ -102,8 +102,8 @@ kt_jvm_library(
     srcs = [
         "java/TestAPNoGenReferences.java",
         "java/TestJavaService.java",
-        "kotlin/TestKtAPNoGenReference.kt",
         "kotlin/TestKtService.kt",
+        "kotlin/TestKtValueNoReferences.kt",
     ],
     plugins = [
         ":autoservice",

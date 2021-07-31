@@ -56,7 +56,10 @@ class JarCreator(
    * @param path the path of the input for the entry
    * @return true iff a new entry was added
    */
-  private fun addEntry(entryName: String, path: Path): Boolean {
+  private fun addEntry(
+    entryName: String,
+    path: Path
+  ): Boolean {
     var normalizedEntryName = entryName
     if (normalizedEntryName.startsWith("/")) {
       normalizedEntryName = normalizedEntryName.substring(1)
@@ -81,7 +84,10 @@ class JarCreator(
    * @param fileName the name of the input file for the entry
    * @return true iff a new entry was added
    */
-  fun addEntry(entryName: String, fileName: String): Boolean {
+  fun addEntry(
+    entryName: String,
+    fileName: String
+  ): Boolean {
     return addEntry(entryName, get(fileName))
   }
 
@@ -154,7 +160,7 @@ class JarCreator(
    *
    * <pre>
    * some/long/path.foo => (path.foo, some/long/path.foo)
-  </pre> *
+   * </pre> *
    */
   fun addRootEntries(entries: Collection<String>) {
     for (entry in entries) {
@@ -173,7 +179,10 @@ class JarCreator(
     this.mainClass = mainClass
   }
 
-  fun setJarOwner(targetLabel: String, injectingRuleKind: String) {
+  fun setJarOwner(
+    targetLabel: String,
+    injectingRuleKind: String
+  ) {
     this.targetLabel = targetLabel
     this.injectingRuleKind = injectingRuleKind
   }

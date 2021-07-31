@@ -19,11 +19,18 @@ import io.bazel.kotlin.model.CompilationTaskInfo
 import io.bazel.kotlin.model.JvmCompilationTask
 import java.io.File
 
-val JvmCompilationTask.Inputs.joinedClasspath: String get() = this.classpathList.joinToString(File.pathSeparator)
+val JvmCompilationTask.Inputs.joinedClasspath: String
+  get() = this.classpathList.joinToString(
+    File.pathSeparator
+  )
 
-val CompilationTaskInfo.bazelRuleKind: String get() = "kt_${platform.name.toLowerCase()}_${ruleKind.name.toLowerCase()}"
+val CompilationTaskInfo.bazelRuleKind: String
+  get() = "kt_${platform.name.toLowerCase()}_${ruleKind.name.toLowerCase()}"
 
-fun Iterator<String>.partitionJvmSources(kt: (String) -> Unit, java: (String) -> Unit) {
+fun Iterator<String>.partitionJvmSources(
+  kt: (String) -> Unit,
+  java: (String) -> Unit
+) {
   forEach {
     when {
       it.endsWith(".kt") -> kt(it)

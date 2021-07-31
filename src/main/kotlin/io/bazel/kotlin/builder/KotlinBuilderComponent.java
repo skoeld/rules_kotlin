@@ -24,34 +24,34 @@ import io.bazel.kotlin.builder.tasks.js.Kotlin2JsTaskExecutor;
 import io.bazel.kotlin.builder.tasks.jvm.InternalCompilerPlugins;
 import io.bazel.kotlin.builder.tasks.jvm.KotlinJvmTaskExecutor;
 import io.bazel.kotlin.builder.toolchain.KotlinToolchain;
-
 import javax.inject.Singleton;
 
 @Singleton
-@dagger.Component(modules = {KotlinBuilderComponent.Module.class})
+@dagger.Component(modules = { KotlinBuilderComponent.Module.class })
 public interface KotlinBuilderComponent {
-    KotlinToolchain toolchain();
+  KotlinToolchain toolchain();
 
-    KotlinJvmTaskExecutor jvmTaskExecutor();
+  KotlinJvmTaskExecutor jvmTaskExecutor();
 
-    Kotlin2JsTaskExecutor jsTaskExecutor();
+  Kotlin2JsTaskExecutor jsTaskExecutor();
 
-    CompileKotlin work();
+  CompileKotlin work();
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance
-        KotlinBuilderComponent.Builder toolchain(KotlinToolchain toolchain);
+  @Component.Builder
+  interface Builder {
+    @BindsInstance
+    KotlinBuilderComponent.Builder toolchain(KotlinToolchain toolchain);
 
-        KotlinBuilderComponent build();
+    KotlinBuilderComponent build();
+  }
+
+  @dagger.Module
+  class Module {
+    @Provides
+    public InternalCompilerPlugins provideInternalPlugins(KotlinToolchain toolchain) {
+      return new InternalCompilerPlugins(
+          toolchain.getJvmAbiGen(), toolchain.getSkipCodeGen(), toolchain.getKapt3Plugin(),
+          toolchain.getJdepsGen());
     }
-
-    @dagger.Module
-    class Module {
-        @Provides
-        public InternalCompilerPlugins provideInternalPlugins(KotlinToolchain toolchain) {
-            return new InternalCompilerPlugins(
-                    toolchain.getJvmAbiGen(), toolchain.getSkipCodeGen(), toolchain.getKapt3Plugin(), toolchain.getJdepsGen());
-        }
-    }
+  }
 }

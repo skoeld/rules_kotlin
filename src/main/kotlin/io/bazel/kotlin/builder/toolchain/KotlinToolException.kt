@@ -20,7 +20,10 @@ sealed class KotlinToolException(
   ex: Throwable? = null
 ) : RuntimeException(msg, ex)
 
-class CompilationException(msg: String, cause: Throwable? = null) :
+class CompilationException(
+  msg: String,
+  cause: Throwable? = null
+) :
   KotlinToolException(msg, cause)
 
 class CompilationStatusException(

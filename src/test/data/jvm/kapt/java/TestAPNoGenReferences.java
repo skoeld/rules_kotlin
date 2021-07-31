@@ -20,12 +20,12 @@ import com.google.auto.value.AutoValue;
 // unlike TestAutoValue, this class shouldn't fail compilation. Used to test that java annotation processing is disabled unless plugins are present.
 @AutoValue
 public abstract class TestAPNoGenReferences {
-    abstract String name();
+  abstract String name();
 
-    @AutoValue.Builder
-    abstract static class Builder {
-        abstract Builder setName(String name);
+  @AutoValue.Builder
+  abstract static class Builder {
+    abstract Builder setName(String name);
 
-        abstract TestAPNoGenReferences build();
-    }
+    abstract TestAPNoGenReferences build();
+  }
 }

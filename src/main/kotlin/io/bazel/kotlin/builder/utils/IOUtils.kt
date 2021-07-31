@@ -29,7 +29,10 @@ import java.util.Arrays
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-private fun executeAwait(timeoutSeconds: Int, process: Process): Int {
+private fun executeAwait(
+  timeoutSeconds: Int,
+  process: Process
+): Int {
   try {
     if (!process.waitFor(timeoutSeconds.toLong(), TimeUnit.SECONDS)) {
       throw TimeoutException()
@@ -42,7 +45,11 @@ private fun executeAwait(timeoutSeconds: Int, process: Process): Int {
   }
 }
 
-fun executeAndAwait(timeoutSeconds: Int, directory: File? = null, args: List<String>): Int {
+fun executeAndAwait(
+  timeoutSeconds: Int,
+  directory: File? = null,
+  args: List<String>
+): Int {
   val process = ProcessBuilder(*args.toTypedArray()).let { pb ->
     pb.redirectError(ProcessBuilder.Redirect.PIPE)
     pb.redirectOutput(ProcessBuilder.Redirect.PIPE)

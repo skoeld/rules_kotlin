@@ -102,7 +102,11 @@ class JdepsGenExtension(
     }
 
     fun getClassCanonicalPath(typeConstructor: TypeConstructor): String? {
-      return (typeConstructor.declarationDescriptor as? DeclarationDescriptorWithSource)?.let { getClassCanonicalPath(it) }
+      return (typeConstructor.declarationDescriptor as? DeclarationDescriptorWithSource)?.let {
+        getClassCanonicalPath(
+          it
+        )
+      }
     }
   }
 
@@ -114,7 +118,9 @@ class JdepsGenExtension(
     platform: TargetPlatform,
     moduleDescriptor: ModuleDescriptor
   ) {
-    container.useInstance(ClasspathCollectingChecker(explicitClassesCanonicalPaths, implicitClassesCanonicalPaths))
+    container.useInstance(
+      ClasspathCollectingChecker(explicitClassesCanonicalPaths, implicitClassesCanonicalPaths)
+    )
   }
 
   class ClasspathCollectingChecker(
@@ -129,21 +135,34 @@ class JdepsGenExtension(
     ) {
       when (val resultingDescriptor = resolvedCall.resultingDescriptor) {
         is FunctionImportedFromObject -> {
-          collectTypeReferences((resolvedCall.resultingDescriptor as FunctionImportedFromObject).containingObject.defaultType)
+          collectTypeReferences(
+            (
+              resolvedCall.resultingDescriptor
+                as FunctionImportedFromObject
+              ).containingObject.defaultType
+          )
         }
         is PropertyImportedFromObject -> {
-          collectTypeReferences((resolvedCall.resultingDescriptor as PropertyImportedFromObject).containingObject.defaultType)
+          collectTypeReferences(
+            (
+              resolvedCall.resultingDescriptor
+                as PropertyImportedFromObject
+              ).containingObject.defaultType
+          )
         }
         is JavaMethodDescriptor -> {
-          getClassCanonicalPath((resultingDescriptor.containingDeclaration as ClassDescriptor).typeConstructor)?.let { explicitClassesCanonicalPaths.add(it) }
+          getClassCanonicalPath(
+            (resultingDescriptor.containingDeclaration as ClassDescriptor).typeConstructor
+          )?.let { explicitClassesCanonicalPaths.add(it) }
         }
         is FunctionDescriptor -> {
           resultingDescriptor.returnType?.let { addImplicitDep(it) }
           resultingDescriptor.valueParameters.forEach { valueParameter ->
             addImplicitDep(valueParameter.type)
           }
-          val virtualFileClass = resultingDescriptor.getContainingKotlinJvmBinaryClass() as? VirtualFileKotlinClass
-            ?: return
+          val virtualFileClass =
+            resultingDescriptor.getContainingKotlinJvmBinaryClass() as? VirtualFileKotlinClass
+              ?: return
           explicitClassesCanonicalPaths.add(virtualFileClass.file.path)
         }
         is ParameterDescriptor -> {
@@ -157,9 +176,13 @@ class JdepsGenExtension(
         }
         is PropertyDescriptor -> {
           when (resultingDescriptor.containingDeclaration) {
-            is ClassDescriptor -> collectTypeReferences((resultingDescriptor.containingDeclaration as ClassDescriptor).defaultType)
+            is ClassDescriptor -> collectTypeReferences(
+              (resultingDescriptor.containingDeclaration as ClassDescriptor).defaultType
+            )
             else -> {
-              val virtualFileClass = (resultingDescriptor).getContainingKotlinJvmBinaryClass() as? VirtualFileKotlinClass ?: return
+              val virtualFileClass =
+                (resultingDescriptor).getContainingKotlinJvmBinaryClass() as? VirtualFileKotlinClass
+                  ?: return
               explicitClassesCanonicalPaths.add(virtualFileClass.file.path)
             }
           }
@@ -218,7 +241,10 @@ class JdepsGenExtension(
      * are other types required for compilation such as supertypes and interfaces of those explicit
      * types.
      */
-    private fun collectTypeReferences(kotlinType: KotlinType, collectSuperTypes: Boolean = true) {
+    private fun collectTypeReferences(
+      kotlinType: KotlinType,
+      collectSuperTypes: Boolean = true
+    ) {
       addExplicitDep(kotlinType)
 
       if (collectSuperTypes) {
@@ -345,14 +371,13 @@ class JdepsGenExtension(
       .map { JarOwner.readJarOwnerFromManifest(Paths.get(it)).label }
 
     if (missingStrictDeps.isNotEmpty()) {
+      val missing = missingStrictDeps.joinToString(" ")
       val open = "\u001b[35m\u001b[1m"
       val close = "\u001b[0m"
-      val command =
-        """
-              |$open ** Please add the following dependencies:$close ${missingStrictDeps.joinToString(" ")} to $targetLabel 
-              |$open ** You can use the following buildozer command:$close buildozer 'add deps ${missingStrictDeps.joinToString(" ")}' $targetLabel
-            """.trimMargin()
-
+      val command = """
+      |$open ** Please add the dependencies:$close $missing to $targetLabel 
+      |$open ** You can use the buildozer command:$close buildozer 'add deps $missing' $targetLabel
+      """.trimMargin()
       println(command)
       return true
     }

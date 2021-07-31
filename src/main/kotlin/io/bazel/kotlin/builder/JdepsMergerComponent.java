@@ -20,33 +20,31 @@ import dagger.Component;
 import dagger.Provides;
 import io.bazel.kotlin.builder.tasks.MergeJdeps;
 import io.bazel.kotlin.builder.tasks.jvm.JdepsMerger;
-
-import javax.inject.Singleton;
 import java.io.PrintStream;
+import javax.inject.Singleton;
 
 @Singleton
-@dagger.Component(modules = {JdepsMergerComponent.Module.class})
+@dagger.Component(modules = { JdepsMergerComponent.Module.class })
 public interface JdepsMergerComponent {
 
-    MergeJdeps work();
+  MergeJdeps work();
 
-    @Component.Builder
-    interface Builder {
-        JdepsMergerComponent build();
+  @Component.Builder
+  interface Builder {
+    JdepsMergerComponent build();
+  }
+
+  @dagger.Module
+  abstract class Module {
+
+    @Provides
+    public static PrintStream provideDebugPrintStream() {
+      return System.err;
     }
 
-    @dagger.Module
-    abstract class Module {
-
-        @Provides
-        public static PrintStream provideDebugPrintStream() {
-            return System.err;
-        }
-
-        @Provides
-        public static JdepsMerger provideJdepsMerger() {
-            return new JdepsMerger();
-        }
-
+    @Provides
+    public static JdepsMerger provideJdepsMerger() {
+      return new JdepsMerger();
     }
+  }
 }

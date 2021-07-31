@@ -40,7 +40,7 @@ class KotlinNormalizationAssertionTest : KotlinAssertionTestCase("src/test/data/
     }
     jarTestCase(
       name = "test_embed_resources.jar",
-      description = "Merging resources into the main output jar should still result in a normalized jar"
+      description = "Merging resources into main output jar should still result in a normalized jar"
     ) {
       validateFileSha256("ff35e9779be25c5803ab74cd5cee46bfd35da9412fe78395d1ebc2fb2e20880a")
       assertManifestStamped()

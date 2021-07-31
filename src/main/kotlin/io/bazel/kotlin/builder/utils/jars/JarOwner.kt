@@ -7,7 +7,11 @@ import java.io.UncheckedIOException
 import java.nio.file.Path
 import java.util.jar.JarFile
 
-data class JarOwner(val jar: Path, val label: String? = null, val aspect: String? = null) {
+data class JarOwner(
+  val jar: Path,
+  val label: String? = null,
+  val aspect: String? = null
+) {
   companion object {
     fun readJarOwnerFromManifest(jarPath: Path): JarOwner {
       try {

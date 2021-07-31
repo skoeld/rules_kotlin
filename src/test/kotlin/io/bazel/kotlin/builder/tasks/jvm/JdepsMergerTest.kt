@@ -14,7 +14,8 @@ import io.bazel.worker.WorkerContext
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.io.*
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -266,13 +267,19 @@ class JdepsMergerTest {
   }
 
   class ArgsBuilder(val args: MutableMap<Flag, MutableList<String>> = mutableMapOf()) {
-    fun flag(flag: Flag, value: String) {
+    fun flag(
+      flag: Flag,
+      value: String
+    ) {
       args[flag] = (args[flag] ?: mutableListOf()).also {
         it.add(value)
       }
     }
 
-    fun flag(flag: Flag, p: Path) {
+    fun flag(
+      flag: Flag,
+      p: Path
+    ) {
       flag(flag, p.toString())
     }
 

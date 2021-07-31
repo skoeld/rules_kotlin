@@ -1329,6 +1329,7 @@ class KotlinBuilderJvmJdepsTest {
     assertUnused(jdeps).isEmpty()
     assertIncomplete(jdeps).isEmpty()
   }
+
   @Test
   fun `property reference should collect indirect super class as implicit dependency`() {
     val implicitSuperClassDep = ctx.runCompileTask(
@@ -1952,16 +1953,23 @@ class KotlinBuilderJvmJdepsTest {
 
     assertThat(jdeps.ruleLabel).isEqualTo(dependingTarget.label())
 
-    assertExplicit(jdeps).containsAtLeast(depWithFunction.singleCompileJar(), depWithReturnType.singleCompileJar())
+    assertExplicit(jdeps).containsAtLeast(
+      depWithFunction.singleCompileJar(),
+      depWithReturnType.singleCompileJar()
+    )
     assertImplicit(jdeps).doesNotContain(depWithReturnType.singleCompileJar())
     assertImplicit(jdeps).doesNotContain(depWithReturnTypesSuperType)
   }
 
   private fun depsProto(jdeps: io.bazel.kotlin.builder.Deps.Dep) =
-    Deps.Dependencies.parseFrom(BufferedInputStream(Files.newInputStream(Paths.get(jdeps.jdeps()!!))))
+    Deps.Dependencies.parseFrom(
+      BufferedInputStream(Files.newInputStream(Paths.get(jdeps.jdeps()!!)))
+    )
 
   private fun javaDepsProto(jdeps: io.bazel.kotlin.builder.Deps.Dep) =
-    Deps.Dependencies.parseFrom(BufferedInputStream(Files.newInputStream(Paths.get(jdeps.javaJdeps()!!))))
+    Deps.Dependencies.parseFrom(
+      BufferedInputStream(Files.newInputStream(Paths.get(jdeps.javaJdeps()!!)))
+    )
 
   private fun assertExplicit(jdeps: Deps.Dependencies) = assertThat(
     jdeps.dependencyList.filter { it.kind == Deps.Dependency.Kind.EXPLICIT }.map { it.path }

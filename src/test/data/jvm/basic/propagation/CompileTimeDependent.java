@@ -18,12 +18,12 @@ package testing;
 import org.junit.Test;
 
 public class CompileTimeDependent {
-    public static void main(String[] args) {
-        new Stub();
-    }
+  public static void main(String[] args) {
+    new Stub();
+  }
 
-    @Test
-    public void justSoIcanUseTheTestAnnotation() {
+  @Test
+  public void justSoIcanUseTheTestAnnotation() {
 
-    }
+  }
 }

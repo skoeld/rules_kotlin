@@ -97,7 +97,11 @@ open class JarHelper internal constructor(
    * '/'.
    */
   @Throws(IOException::class)
-  private fun writeEntry(out: JarOutputStream, name: String, content: ByteArray) {
+  private fun writeEntry(
+    out: JarOutputStream,
+    name: String,
+    content: ByteArray
+  ) {
     if (names.add(name)) {
       // Create a new entry
       val entry = JarEntry(name)
@@ -130,7 +134,10 @@ open class JarHelper internal constructor(
    * @throws IOException
    */
   @Throws(IOException::class)
-  protected fun writeManifestEntry(out: JarOutputStream, content: ByteArray) {
+  protected fun writeManifestEntry(
+    out: JarOutputStream,
+    content: ByteArray
+  ) {
     val oldStorageMethod = storageMethod
     // Do not compress small manifest files, the compressed one is frequently
     // larger than the original. The threshold of 256 bytes is somewhat arbitrary.
@@ -150,7 +157,10 @@ open class JarHelper internal constructor(
    * detected and their names automatically '/' suffixed.
    */
   @Throws(IOException::class)
-  protected fun JarOutputStream.copyEntry(name: String, path: Path) {
+  protected fun JarOutputStream.copyEntry(
+    name: String,
+    path: Path
+  ) {
     var normalizedName = name
     if (!names.contains(normalizedName)) {
       if (!Files.exists(path)) {
@@ -248,7 +258,7 @@ open class JarHelper internal constructor(
     // Normalized timestamp for zip entries
     // We do not include the system's default timezone and locale and additionally avoid the unix epoch
     // to ensure Java's zip implementation does not add the System's timezone into the extra field of the zip entry
-    val DEFAULT_TIMESTAMP = GregorianCalendar(1980, Calendar.FEBRUARY, 1, 0, 0, 0).getTimeInMillis()
+    val DEFAULT_TIMESTAMP = GregorianCalendar(1980, Calendar.FEBRUARY, 1, 0, 0, 0).timeInMillis
 
     // These attributes are used by JavaBuilder, Turbine, and ijar.
     // They must all be kept in sync.

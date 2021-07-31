@@ -47,7 +47,10 @@ class SourceJarCreator(
   }
 
   sealed class Entry {
-    class File(val path: Path, val content: ByteArray) : Entry() {
+    class File(
+      val path: Path,
+      val content: ByteArray
+    ) : Entry() {
       override fun toString(): String = "File $path"
     }
 
@@ -72,10 +75,14 @@ class SourceJarCreator(
      *
      * If the directory could not be located add it to the deferred list and return null.
      *
-     * Files like `package-info.java` could end up getting deferred if they have an annotation embedded on the same
-     * line or files that have entries such as `/* weird comment */package lala`
+     * Files like `package-info.java` could end up getting deferred if they have an annotation
+     * embedded on the same line or files that have entries such as `/* weird comment */package
+     * lala`
      */
-    fun getFilenameOrDefer(sourceFile: Path, body: ByteArray): String? =
+    fun getFilenameOrDefer(
+      sourceFile: Path,
+      body: ByteArray
+    ): String? =
       directoryToPackageMap[sourceFile.parent] ?: locatePackagePathOrDefer(sourceFile, body)?.let {
         "$it/${sourceFile.fileName}"
       }
@@ -91,7 +98,10 @@ class SourceJarCreator(
       }
     }
 
-    private fun locatePackagePathOrDefer(sourceFile: Path, body: ByteArray): String? =
+    private fun locatePackagePathOrDefer(
+      sourceFile: Path,
+      body: ByteArray
+    ): String? =
       body.inputStream().bufferedReader().useLines {
         it.mapNotNull(::extractPackage).firstOrNull()?.replace('.', '/')
       }.also {
@@ -138,8 +148,8 @@ class SourceJarCreator(
   }
 
   /**
-   * Add a single source file. This method uses the [JarFilenameHelper] so it should be used when jar filename
-   * correction is desired. It should only be used for Java-Like source files.
+   * Add a single source file. This method uses the [JarFilenameHelper] so it should be used
+   * when jar filename correction is desired. It should only be used for Java-Like source files.
    */
   private fun addJavaLikeSourceFile(sourceFile: Path) {
     val bytes = Files.readAllBytes(sourceFile)
@@ -182,7 +192,11 @@ class SourceJarCreator(
     }
   }
 
-  private fun addEntry(name: String, path: Path, bytes: ByteArray) {
+  private fun addEntry(
+    name: String,
+    path: Path,
+    bytes: ByteArray
+  ) {
     name.split("/").also {
       if (it.size >= 2) {
         for (i in ((it.size - 1) downTo 1)) {
@@ -198,7 +212,8 @@ class SourceJarCreator(
 
     val result = entries.putIfAbsent(name, Entry.File(path, bytes))
     require(result as? Entry.Directory != null || result == null) {
-      "source entry jarName: $name from: $path collides with entry from: ${(result as Entry.File).path}"
+      "source entry jarName: $name from: $path collides " +
+        "with entry from: ${(result as Entry.File).path}"
     }
   }
 }

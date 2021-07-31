@@ -28,7 +28,10 @@ open class JarExtractor protected constructor(
    * @param target path the operation will apply to.
    * @return weather the operation should be applied or not.
    */
-  internal open fun preWrite(isDirectory: Boolean, target: Path): Boolean = true
+  internal open fun preWrite(
+    isDirectory: Boolean,
+    target: Path
+  ): Boolean = true
 
   protected fun extract(jarFile: Path) {
     JarFile(jarFile.toFile()).use { jar ->
