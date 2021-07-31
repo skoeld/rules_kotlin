@@ -1,10 +1,10 @@
 package examples.android.lib
 
-import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {

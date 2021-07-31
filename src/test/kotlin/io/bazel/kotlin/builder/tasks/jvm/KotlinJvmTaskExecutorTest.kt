@@ -43,13 +43,17 @@ class KotlinJvmTaskExecutorTest {
     assertFalse(compileTask.hasInputs())
 
     assertTrue(expandedCompileTask.hasInputs())
-    assertNotNull(expandedCompileTask.inputs.javaSourcesList.find { path ->
-      path.endsWith("a_test_1/generated_sources/AnotherGenClass.java")
-    })
+    assertNotNull(
+      expandedCompileTask.inputs.javaSourcesList.find { path ->
+        path.endsWith("a_test_1/generated_sources/AnotherGenClass.java")
+      }
+    )
     assertEquals(expandedCompileTask.inputs.javaSourcesCount, 1)
-    assertNotNull(expandedCompileTask.inputs.kotlinSourcesList.find { path ->
-      path.endsWith("a_test_1/generated_sources/AGenClass.kt")
-    })
+    assertNotNull(
+      expandedCompileTask.inputs.kotlinSourcesList.find { path ->
+        path.endsWith("a_test_1/generated_sources/AGenClass.kt")
+      }
+    )
     assertEquals(expandedCompileTask.inputs.kotlinSourcesCount, 1)
   }
 }

@@ -14,7 +14,7 @@
  *  limitations under the License.
  *
  */
-package io.bazel.kotlin.builder.tasks.jvm;
+package io.bazel.kotlin.builder.tasks.jvm
 
 import io.bazel.kotlin.builder.DirectoryType
 import io.bazel.kotlin.builder.KotlinJvmTestBuilder
@@ -29,30 +29,45 @@ class KotlinBuilderJvmCoverageTest {
 
   @Test
   fun `generates coverage metadata`() {
-    val deps = ctx.runCompileTask(Consumer { c: KotlinJvmTestBuilder.TaskBuilder ->
-      c.addSource("JavaClass.java",
-        """
+    val deps = ctx.runCompileTask(
+      Consumer { c: KotlinJvmTestBuilder.TaskBuilder ->
+        c.addSource(
+          "JavaClass.java",
+          """
           package something;
           
           class JavaClass {
           }
-        """)
-      c.addSource("KotlinClass.kt",
         """
+        )
+        c.addSource(
+          "KotlinClass.kt",
+          """
             package something
             
             class KotlinClass{}
-          """)
-      c.outputJar()
-      c.compileKotlin()
-      c.compileJava()
-      c.coverage()
-      c.outputJdeps()
-      c.outputJavaJdeps()
-    })
+          """
+        )
+        c.outputJar()
+        c.compileKotlin()
+        c.compileJava()
+        c.coverage()
+        c.outputJdeps()
+        c.outputJavaJdeps()
+      }
+    )
 
-    ctx.assertFilesExist(DirectoryType.COVERAGE_METADATA, "something/JavaClass.class.uninstrumented")
-    ctx.assertFilesExist(DirectoryType.COVERAGE_METADATA, "something/KotlinClass.class.uninstrumented")
-    ctx.assertFilesExist(DirectoryType.COVERAGE_METADATA, "jar_file.jar-paths-for-coverage.txt")
+    ctx.assertFilesExist(
+      DirectoryType.COVERAGE_METADATA,
+      "something/JavaClass.class.uninstrumented"
+    )
+    ctx.assertFilesExist(
+      DirectoryType.COVERAGE_METADATA,
+      "something/KotlinClass.class.uninstrumented"
+    )
+    ctx.assertFilesExist(
+      DirectoryType.COVERAGE_METADATA,
+      "jar_file.jar-paths-for-coverage.txt"
+    )
   }
 }

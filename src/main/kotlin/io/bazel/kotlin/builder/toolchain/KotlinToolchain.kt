@@ -53,9 +53,11 @@ class KotlinToolchain private constructor(
     // TODO(issue/432): Remove this gross hack and pass the file locations on the command line.
     private var RULES_REPOSITORY_NAME =
       System.getenv("TEST_WORKSPACE")?.takeIf { it.isNotBlank() }
-      ?: System.getenv("REPOSITORY_NAME")?.takeIf { it.isNotBlank() }
-   //   ?: System.getProperty("TEST_WORKSPACE")?.takeIf { it.isNotBlank() }
-      ?: error("Unable to determine rules_kotlin repository name.\nenv:${System.getenv()}\nproperties:${System.getProperties()}")
+        ?: System.getenv("REPOSITORY_NAME")?.takeIf { it.isNotBlank() }
+        //   ?: System.getProperty("TEST_WORKSPACE")?.takeIf { it.isNotBlank() }
+        ?: error(
+          "Unable to determine rules_kotlin repository name.\nenv:${System.getenv()}\nproperties:${System.getProperties()}"
+        )
 
     private val DEFAULT_JVM_ABI_PATH = BazelRunFiles.resolveVerified(
       "external", "com_github_jetbrains_kotlin", "lib", "jvm-abi-gen.jar"
@@ -64,17 +66,20 @@ class KotlinToolchain private constructor(
     private val COMPILER = BazelRunFiles.resolveVerified(
       RULES_REPOSITORY_NAME,
       "src", "main", "kotlin", "io", "bazel", "kotlin", "compiler",
-      "compiler.jar").toPath()
+      "compiler.jar"
+    ).toPath()
 
     private val SKIP_CODE_GEN_PLUGIN = BazelRunFiles.resolveVerified(
       RULES_REPOSITORY_NAME,
       "src", "main", "kotlin",
-      "skip-code-gen.jar").toPath()
+      "skip-code-gen.jar"
+    ).toPath()
 
     private val JDEPS_GEN_PLUGIN = BazelRunFiles.resolveVerified(
       RULES_REPOSITORY_NAME,
       "src", "main", "kotlin",
-      "jdeps-gen.jar").toPath()
+      "jdeps-gen.jar"
+    ).toPath()
 
     internal val NO_ARGS = arrayOf<Any>()
 
@@ -109,7 +114,8 @@ class KotlinToolchain private constructor(
       val jdepsGenFile = JDEPS_GEN_PLUGIN.verified().absoluteFile
 
       val kotlinCompilerJar = BazelRunFiles.resolveVerified(
-        "external", "com_github_jetbrains_kotlin", "lib", "kotlin-compiler.jar")
+        "external", "com_github_jetbrains_kotlin", "lib", "kotlin-compiler.jar"
+      )
 
       val jvmAbiGenFile = jvmAbiGenPath.verified()
       return KotlinToolchain(
@@ -129,10 +135,12 @@ class KotlinToolchain private constructor(
         ),
         jvmAbiGen = CompilerPlugin(
           jvmAbiGenFile.absolutePath,
-          "org.jetbrains.kotlin.jvm.abi"),
+          "org.jetbrains.kotlin.jvm.abi"
+        ),
         skipCodeGen = CompilerPlugin(
           skipCodeGenFile.absolutePath,
-          "io.bazel.kotlin.plugin.SkipCodeGen"),
+          "io.bazel.kotlin.plugin.SkipCodeGen"
+        ),
         jdepsGen = CompilerPlugin(
           jdepsGenFile.absolutePath,
           "io.bazel.kotlin.plugin.jdeps.JDepsGen"

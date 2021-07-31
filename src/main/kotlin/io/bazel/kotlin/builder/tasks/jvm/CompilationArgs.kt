@@ -125,7 +125,8 @@ class CompilationArgs(
     return value(
       toArgs(
         paths.asSequence()
-          .map { dfs.getPath(it) })
+          .map { dfs.getPath(it) }
+      )
     )
   }
 

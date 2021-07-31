@@ -15,10 +15,10 @@
  */
 package coffee
 
+import chai.ChaiCup
 import dagger.Component
 import kotlinx.coroutines.runBlocking
 import tea.TeaPot
-import chai.ChaiCup
 import javax.inject.Singleton
 
 class CoffeeApp {

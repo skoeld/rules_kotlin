@@ -1,9 +1,9 @@
-package plugin.allopen;
+package plugin.allopen
 
-import java.util.*
+import java.util.UUID
 
 @OpenForTesting
 data class User(
-        val userId: UUID,
-        val emails: String
+  val userId: UUID,
+  val emails: String
 )

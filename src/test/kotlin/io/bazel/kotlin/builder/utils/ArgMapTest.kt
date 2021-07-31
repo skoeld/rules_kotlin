@@ -42,11 +42,13 @@ class ArgMapTest {
       override val flag = "mirror mirror"
     }
     val args = ArgMap(mapOf())
-    Assert.assertThrows("Option is mandatory when condition is false",
-        IllegalArgumentException::class.java) {
+    Assert.assertThrows(
+      "Option is mandatory when condition is false",
+      IllegalArgumentException::class.java
+    ) {
       args.optionalSingleIf(key) { false }
     }
-    Truth.assertThat(args.optionalSingleIf(key) { true }).isNull();
+    Truth.assertThat(args.optionalSingleIf(key) { true }).isNull()
   }
 
   @Test
@@ -57,14 +59,18 @@ class ArgMapTest {
     val full = object : Flag {
       override val flag = "optimist"
     }
-    val args = ArgMap(mapOf(
+    val args = ArgMap(
+      mapOf(
         Pair(empty.flag, emptyList()),
         Pair(full.flag, listOf("half"))
-    ))
+      )
+    )
     Truth.assertThat(args.hasAll(full)).isTrue()
     Truth.assertThat(args.hasAll(empty, full)).isFalse()
-    Truth.assertThat(args.hasAll(object : Flag {
-      override val flag = "immaterial"
-    })).isFalse()
+    Truth.assertThat(
+      args.hasAll(object : Flag {
+        override val flag = "immaterial"
+      })
+    ).isFalse()
   }
 }

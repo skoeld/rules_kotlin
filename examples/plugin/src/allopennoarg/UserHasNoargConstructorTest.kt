@@ -1,6 +1,6 @@
 package plugin.allopennoarg
 
-import org.junit.*
+import org.junit.Test
 import java.lang.Exception
 
 class UserHasNoargConstructorTest {

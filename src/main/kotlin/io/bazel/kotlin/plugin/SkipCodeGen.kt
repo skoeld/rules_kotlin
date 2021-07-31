@@ -42,8 +42,10 @@ class SkipCodeGen : ComponentRegistrar {
     project: MockProject,
     configuration: CompilerConfiguration
   ) {
-    AnalysisHandlerExtension.registerExtension(project,
-        SkipCodeGen)
+    AnalysisHandlerExtension.registerExtension(
+      project,
+      SkipCodeGen
+    )
   }
 
   /**
@@ -72,8 +74,9 @@ class SkipCodeGen : ComponentRegistrar {
       // Ensure this is the last plugin, as it will short circuit any other plugin analysisCompleted
       // calls.
       Preconditions.checkState(
-          AnalysisHandlerExtension.getInstances(project).last() == this,
-          "SkipCodeGen must be the last plugin: ${AnalysisHandlerExtension.getInstances(project)}")
+        AnalysisHandlerExtension.getInstances(project).last() == this,
+        "SkipCodeGen must be the last plugin: ${AnalysisHandlerExtension.getInstances(project)}"
+      )
       return AnalysisResult.Companion.success(bindingTrace.bindingContext, module, false)
     }
   }

@@ -60,7 +60,7 @@ internal class JdepsParser private constructor(
   private fun processLine(line: String) {
     val parts = line.split(arrowRegex).dropLastWhile { it.isEmpty() }.toTypedArray()
     if (parts.size == 2 && parts[1].endsWith(".jar")) {
-      addModuleDependency(parts[0], parts[1]);
+      addModuleDependency(parts[0], parts[1])
     }
   }
 

@@ -12,8 +12,8 @@ import org.jetbrains.kotlin.container.useInstance
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptorWithSource
-import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
+import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.descriptors.ParameterDescriptor
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
 import org.jetbrains.kotlin.descriptors.SourceElement
@@ -67,7 +67,8 @@ import java.nio.file.Paths
  */
 class JdepsGenExtension(
   val project: MockProject,
-  val configuration: CompilerConfiguration) :
+  val configuration: CompilerConfiguration
+) :
   AnalysisHandlerExtension, StorageComponentContainerContributor {
 
   companion object {
@@ -229,7 +230,10 @@ class JdepsGenExtension(
       collectTypeArguments(kotlinType)
     }
 
-    fun collectTypeArguments(kotlinType: KotlinType, visitedKotlinTypes: MutableSet<KotlinType> = mutableSetOf()) {
+    fun collectTypeArguments(
+      kotlinType: KotlinType,
+      visitedKotlinTypes: MutableSet<KotlinType> = mutableSetOf()
+    ) {
       visitedKotlinTypes.add(kotlinType)
       kotlinType.arguments.map { it.type }.forEach { typeArgument ->
         addExplicitDep(typeArgument)
@@ -316,11 +320,14 @@ class JdepsGenExtension(
     compilerConfiguration: CompilerConfiguration,
     targetLabel: String,
     directDeps: MutableList<String>,
-    explicitDeps: Map<String, List<String>>) {
+    explicitDeps: Map<String, List<String>>
+  ) {
     when (compilerConfiguration.getNotNull(JdepsGenConfigurationKeys.STRICT_KOTLIN_DEPS)) {
       "warn" -> checkStrictDeps(explicitDeps, directDeps, targetLabel)
       "error" -> {
-        if (checkStrictDeps(explicitDeps, directDeps, targetLabel)) error("Strict Deps Violations - please fix")
+        if (checkStrictDeps(explicitDeps, directDeps, targetLabel)) error(
+          "Strict Deps Violations - please fix"
+        )
       }
     }
   }
@@ -352,4 +359,3 @@ class JdepsGenExtension(
     return false
   }
 }
-

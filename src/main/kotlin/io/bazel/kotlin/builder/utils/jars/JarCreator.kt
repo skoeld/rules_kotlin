@@ -61,9 +61,9 @@ class JarCreator(
     if (normalizedEntryName.startsWith("/")) {
       normalizedEntryName = normalizedEntryName.substring(1)
     } else if (normalizedEntryName.length >= 3 &&
-               Character.isLetter(normalizedEntryName[0]) &&
-               normalizedEntryName[1] == ':' &&
-               (normalizedEntryName[2] == '\\' || normalizedEntryName[2] == '/')
+      Character.isLetter(normalizedEntryName[0]) &&
+      normalizedEntryName[1] == ':' &&
+      (normalizedEntryName[2] == '\\' || normalizedEntryName[2] == '/')
     ) {
       // Windows absolute path, e.g. "D:\foo" or "e:/blah".
       // Windows paths are case-insensitive, and support both backslashes and forward slashes.
@@ -101,7 +101,10 @@ class JarCreator(
         object : SimpleFileVisitor<Path>() {
 
           @Throws(IOException::class)
-          override fun preVisitDirectory(path: Path, attrs: BasicFileAttributes): FileVisitResult {
+          override fun preVisitDirectory(
+            path: Path,
+            attrs: BasicFileAttributes
+          ): FileVisitResult {
             if (path != directory) {
               // For consistency with legacy behaviour, include entries for directories except for
               // the root.
@@ -111,12 +114,18 @@ class JarCreator(
           }
 
           @Throws(IOException::class)
-          override fun visitFile(path: Path, attrs: BasicFileAttributes): FileVisitResult {
+          override fun visitFile(
+            path: Path,
+            attrs: BasicFileAttributes
+          ): FileVisitResult {
             addEntry(path, /* isDirectory= */ false)
             return FileVisitResult.CONTINUE
           }
 
-          fun addEntry(path: Path, isDirectory: Boolean) {
+          fun addEntry(
+            path: Path,
+            isDirectory: Boolean
+          ) {
             val sb = StringBuilder()
             var first = true
             for (entry in directory.relativize(path)) {
@@ -132,7 +141,8 @@ class JarCreator(
             }
             jarEntries[sb.toString()] = path
           }
-        })
+        }
+      )
     } catch (e: IOException) {
       throw UncheckedIOException(e)
     }

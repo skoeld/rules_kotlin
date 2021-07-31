@@ -31,9 +31,15 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
-class TestCaseFailedException(name: String? = null, description: String? = null, cause: Throwable) :
-  AssertionError(""""${name?.let { "jar: $it " } ?: ""} "$description" failed, error: ${cause.message}""",
-                 cause)
+class TestCaseFailedException(
+  name: String? = null,
+  description: String? = null,
+  cause: Throwable
+) :
+  AssertionError(
+    """"${name?.let { "jar: $it " } ?: ""} "$description" failed, error: ${cause.message}""",
+    cause
+  )
 
 abstract class KotlinAssertionTestCase(root: String) : BasicAssertionTestCase() {
   private lateinit var currentFile: File

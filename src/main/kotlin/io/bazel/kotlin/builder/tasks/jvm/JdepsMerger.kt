@@ -45,7 +45,7 @@ class JdepsMerger {
           val manifest = jarFile.manifest ?: return JarOwner(jarPath)
           val attributes = manifest.mainAttributes
           val label = attributes[TARGET_LABEL] as String?
-                      ?: return JarOwner(jarPath)
+            ?: return JarOwner(jarPath)
           val injectingRuleKind = attributes[INJECTING_RULE_KIND] as String?
           return JarOwner(jarPath, label, injectingRuleKind)
         }

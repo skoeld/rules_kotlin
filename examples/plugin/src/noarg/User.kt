@@ -1,9 +1,9 @@
-package plugin.noarg;
+package plugin.noarg
 
-import java.util.*
+import java.util.UUID
 
 @NoArgConstructor
 data class User(
-        val userId: UUID,
-        val emails: String
+  val userId: UUID,
+  val emails: String
 )

@@ -55,9 +55,12 @@ internal class JavaCompiler @Inject constructor(
         it.addAll(command.inputs.javacFlagsList)
         it.addAll(i.javaSourcesList)
       }
-      context.executeCompilerTask(args, { a, pw ->
-        javacInvoker.compile(a, PrintWriter(pw))
-      })
+      context.executeCompilerTask(
+        args,
+        { a, pw ->
+          javacInvoker.compile(a, PrintWriter(pw))
+        }
+      )
     }
     return emptyList()
   }

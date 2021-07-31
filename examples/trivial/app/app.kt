@@ -15,8 +15,10 @@ class MyApp {
   companion object {
     @JvmStatic
     fun main(args: Array<String>) {
-      val schema = toSchema(queries = listOf(TopLevelObject(Query())),
-          config = SchemaGeneratorConfig(listOf("app")))
+      val schema = toSchema(
+        queries = listOf(TopLevelObject(Query())),
+        config = SchemaGeneratorConfig(listOf("app"))
+      )
 
       val graphql = GraphQL.newGraphQL(schema).build()
 

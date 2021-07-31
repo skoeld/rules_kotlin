@@ -9,7 +9,7 @@ buildifier:
 tasks:
   ubuntu1804:
     test_targets:
-      - "//:all_tests"
+      - "//...:all"
     build_targets:
       - "//:rules_kotlin_release"
   rbe_ubuntu1604:
@@ -55,6 +55,15 @@ tasks:
     name: "Example - Trivial"
     platform: ubuntu1804
     working_directory: examples/trivial
+    include_json_profile:
+      - build
+      - test
+    build_targets:
+      - //...
+  examples-dagger:
+    name: "Example - Dagger"
+    platform: ubuntu1804
+    working_directory: examples/dagger
     include_json_profile:
       - build
       - test
